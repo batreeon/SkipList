@@ -9,7 +9,7 @@
 
 20220613 实现了最基本的skiplist
 
-20220614 [Go io](https://mp.weixin.qq.com/s/A4pXvTr4WboFfP2IiksIPw), [二进制编码](Go 数据存储篇（四）：通过 Gob 包序列化二进制数据)
+20220614 [Go io](https://mp.weixin.qq.com/s/A4pXvTr4WboFfP2IiksIPw), [Go 数据存储篇（四）：通过 Gob 包序列化二进制数据](https://mp.weixin.qq.com/s/yb3XOtO7gIFixwMa25NYpg)
 
 跳表的基本数据结构和插入删除查找操作[skipList.go](./skipList.go)
 
