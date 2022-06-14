@@ -132,3 +132,85 @@ func TestConcurrent(t *testing.T) {
 		}
 	}
 }
+
+func TestDumpAndLoad(t *testing.T) {
+	sl := NewSkipList[string, string]()
+	sl.Insert("foo", "bar")
+	sl.Insert("hubei", "wuhan")
+	sl.Insert("hunan", "changsha")
+	sl.Insert("zhejiang", "ningbo")
+	sl.Insert("zhejiang", "hangzhou")
+
+	err := sl.DumpFile("f1")
+	if err != nil {
+		t.Error(err)
+	}
+	
+	sl2 := NewSkipList[string, string]()
+	err = sl2.LoadFile("f1")
+	if err != nil {
+		t.Error(err)
+	}
+
+	for node1, node2 := sl.Front(), sl2.Front(); node1 != nil || node2 != nil; node1, node2 = node1.Next(), node2.Next() {
+		if (node1 == nil && node2 != nil) || (node1 != nil && node2 == nil) {
+			t.Error("node1 and node2 must be nil simultaneously")
+		}
+		if node1.key != node2.key || node1.value != node2.value {
+			t.Errorf("expecting node1 equals to node2, but node1:{%s:%s}, node2:{%s:%s}", node1.key, node1.value, node2.key, node2.value)
+		}
+	}
+
+	sl3 := NewSkipList[string, vs]()
+	m := map[string]vs{
+		"jiangsu": {
+			"nanjing",
+			"su",
+			1,
+		},
+		"shandong": {
+			"jinan",
+			"lu",
+			3,
+		},
+		"guangdong": {
+			"guangzhou",
+			"yue",
+			4,
+		},
+		"zhejiang": {
+			"hangzhou",
+			"zhe",
+			2,
+		},
+	}
+	for k, v := range m {
+		sl3.Insert(k, v)
+	}
+
+	err = sl3.DumpFile("f3")
+	if err != nil {
+		t.Error(err)
+	}
+
+	sl4 := NewSkipList[string, vs]()
+	err = sl4.LoadFile("f3")
+	if err != nil {
+		t.Error(err)
+	}
+
+	for node3, node4 := sl3.Front(), sl4.Front(); node3 != nil || node4 != nil; node3, node4 = node3.Next(), node4.Next() {
+		if (node3 == nil && node4 != nil) || (node3 != nil && node4 == nil) {
+			t.Error("node1 and node2 must be nil simultaneously")
+		}
+		if node3.key != node4.key || node3.value != node4.value {
+			t.Errorf("expecting node1 equals to node2, but node1:{%s:%v}, node2:{%s:%v}", node3.key, node4.value, node3.key, node4.value)
+		}
+	}
+}
+
+type vs struct {
+	Shenghui string
+	Suoxie string
+	Paiming int
+}
