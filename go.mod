@@ -1,4 +1,4 @@
-module github.com/batreeon/skipList
+module github.com/batreeon/skiplist
 
 go 1.18
 
